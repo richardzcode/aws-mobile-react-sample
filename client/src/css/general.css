@@ -54,3 +54,23 @@
 .content-button {
   margin-bottom: 10px;
 }
+
+.photo-upload-container {
+  position: relative;
+}
+
+.photo-upload-container .photo-upload-img {
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
+}
+
+.photo-upload-container .photo-upload-input {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}

@@ -10,13 +10,13 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Redirect, Link, Switch } from 'react-router-dom';
 import { Button, Card, Row, Col, Navbar, NavItem, Icon } from 'react-materialize';
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
-import Main from './Main';
-import Login from './Auth/Login';
-import Register from './Auth/Register';
-import Forget from './Auth/Forget';
-import {handleSignOut} from './Auth/auth';
-import awsmobile from './configuration/aws-exports';
+
+import Main from './modules/main/Main';
+import Login from './modules/auth/Login';
+import Register from './modules/auth/Register';
+import Forget from './modules/auth/Forget';
+import {handleSignOut} from './modules/auth/auth';
+
 import './css/general.css';
 
 require('file-loader?name=[name].[ext]!./index.html');

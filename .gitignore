@@ -6,3 +6,6 @@
 #
 node_modules/
 npm-debug.log
+
+# app config
+client/src/configuration/aws-exports.js
