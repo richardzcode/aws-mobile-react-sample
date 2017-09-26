@@ -63,6 +63,7 @@
   width: 3em;
   height: 3em;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .photo-upload-container .photo-upload-input {
@@ -73,4 +74,5 @@
   left: 0;
   top: 0;
   opacity: 0;
+  cursor: pointer;
 }

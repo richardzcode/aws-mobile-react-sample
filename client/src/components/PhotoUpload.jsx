@@ -63,7 +63,7 @@ export default class PhotoUpload extends Component {
 		return (
 	        <div className="photo-upload-container">
 	            <img src={this.state.ImgSrc} className="photo-upload-img" />
-	            <input type="file" accept="image/*" className="photo-upload-input"
+	            <input title="Upload Photo" type="file" accept="image/*" className="photo-upload-input"
 	                onChange={(e) => this.handleInput(e)}
 	            />
 	        </div>
