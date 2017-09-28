@@ -9,64 +9,64 @@ See the License for the specific language governing permissions and limitations 
 var uuid = require('node-uuid')
 
 var MenuItem = function(data) {
-	if (!data.id) { data.id = uuid.v1(); }
-	if (!data.photo) { data.photo = []; }
+    if (!data.id) { data.id = uuid.v1(); }
+    if (!data.photo) { data.photo = []; }
 
-	this.id = data.id;
-	this.data = data
+    this.id = data.id;
+    this.data = data
 }
 
 MenuItem.TABLE_NAME = process.env.MENU_TABLE_NAME;
 
 MenuItem.find = function(storage, id, restaurant_id, callback) {
-	storage.find(MenuItem.TABLE_NAME, {id: id, restaurant_id: restaurant_id}, function(err, data) {
-		if (!callback) {
-			console.log('WARN: no callback in MenuItem find')
-			return
-		}
+    storage.find(MenuItem.TABLE_NAME, {id: id, restaurant_id: restaurant_id}, function(err, data) {
+        if (!callback) {
+            console.log('WARN: no callback in MenuItem find')
+            return
+        }
 
-		if (err) {
-			callback(err)
-		} else {
-			if (data) { callback(null, new MenuItem(data)); } else { callback(null, null); }
-		}
-	})
+        if (err) {
+            callback(err)
+        } else {
+            if (data) { callback(null, new MenuItem(data)); } else { callback(null, null); }
+        }
+    })
 }
 
 MenuItem.create = function(storage, menu_item, callback) {
-	storage.create(MenuItem.TABLE_NAME, menu_item.data, function(err, data) {
-		if (!callback) {
-			console.log('WARN: no callback in MenuItem create')
-			return
-		}
+    storage.create(MenuItem.TABLE_NAME, menu_item.data, function(err, data) {
+        if (!callback) {
+            console.log('WARN: no callback in MenuItem create')
+            return
+        }
 
-		if (err) {
-			callback(err)
-		} else {
-			callback(null, menu_item)
-		}
-	})
+        if (err) {
+            callback(err)
+        } else {
+            callback(null, menu_item)
+        }
+    })
 }
 
 MenuItem.findByRestaurantId = function(storage, restaurant_id, callback) {
-	storage.findBy(MenuItem.TABLE_NAME, {restaurant_id: restaurant_id}, function(err, data) {
-		if (!callback) {
-			console.log('WARN: no callback in MenuItem create')
-			return
-		}
+    storage.findBy(MenuItem.TABLE_NAME, {restaurant_id: restaurant_id}, function(err, data) {
+        if (!callback) {
+            console.log('WARN: no callback in MenuItem create')
+            return
+        }
 
-		if (err) {
-			callback(err)
-		} else {
-			list = []
-			for (var i = 0; i < data.length; i++) {
-				var menuItem = new MenuItem(data[i])
-				list.push(menuItem)
-			}
+        if (err) {
+            callback(err)
+        } else {
+            list = []
+            for (var i = 0; i < data.length; i++) {
+                var menuItem = new MenuItem(data[i])
+                list.push(menuItem)
+            }
 
-			callback(null, list)
-		}
-	})
+            callback(null, list)
+        }
+    })
 }
 
 module.exports = MenuItem

@@ -9,14 +9,14 @@ See the License for the specific language governing permissions and limitations 
 var ModelUtil = {}
 
 ModelUtil.toDataList = function(model_list) {
-	if (!model_list) { return null; }
+    if (!model_list) { return null; }
 
-	var list = []
-	for (var i = 0; i < model_list.length; i++) {
-		list.push(model_list[i].data)
-	}
+    var list = []
+    for (var i = 0; i < model_list.length; i++) {
+        list.push(model_list[i].data)
+    }
 
-	return list
+    return list
 }
 
 module.exports = ModelUtil

@@ -7,25 +7,25 @@ See the License for the specific language governing permissions and limitations 
 */
 
 export default class Logger {
-	constructor(name) {
-		this.state = {
-			name: name
-		};
-	}
+    constructor(name) {
+        this.state = {
+            name: name
+        };
+    }
 
-	log(msg, type) {
-		type = type || 'INFO';
+    log(msg, type) {
+        type = type || 'INFO';
 
-		if (typeof msg === 'object') {
+        if (typeof msg === 'object') {
             console.log('[' + type + '] ' + this.state.name + ' - ');
             console.log(msg);
         } else {
             console.log('[' + type + '] ' + this.state.name + ' - ' + msg);
         }
-	}
+    }
 
-	info(msg) { this.log(msg, 'INFO'); }
-	warn(msg) { this.log(msg, 'WARN'); }
-	error(msg) { this.log(msg, 'ERROR'); }
-	debug(msg) { this.log(msg, 'DEBUG'); }
+    info(msg) { this.log(msg, 'INFO'); }
+    warn(msg) { this.log(msg, 'WARN'); }
+    error(msg) { this.log(msg, 'ERROR'); }
+    debug(msg) { this.log(msg, 'DEBUG'); }
 }

@@ -9,40 +9,40 @@ See the License for the specific language governing permissions and limitations 
 var uuid = require('node-uuid')
 
 var Order = function(data) {
-	if (!data.id) { data.id = uuid.v1(); }
-	this.data = data
+    if (!data.id) { data.id = uuid.v1(); }
+    this.data = data
 }
 
 Order.TABLE_NAME = process.env.ORDERS_TABLE_NAME;
 
 Order.find = function(storage, id, callback) {
-	storage.find(Order.TABLE_NAME, id, function(err, data) {
-		if (!callback) {
-			console.log('WARN: no callback in Order find')
-			return
-		}
+    storage.find(Order.TABLE_NAME, id, function(err, data) {
+        if (!callback) {
+            console.log('WARN: no callback in Order find')
+            return
+        }
 
-		if (err) {
-			callback(err)
-		} else {
-			if (data) { callback(null, new Order(data)); } else { callback(null, null); }
-		}
-	})
+        if (err) {
+            callback(err)
+        } else {
+            if (data) { callback(null, new Order(data)); } else { callback(null, null); }
+        }
+    })
 }
 
 Order.create = function(storage, order, callback) {
-	storage.create(Order.TABLE_NAME, order.data, function(err, data) {
-		if (!callback) {
-			console.log('WARN: no callback in Order create')
-			return
-		}
+    storage.create(Order.TABLE_NAME, order.data, function(err, data) {
+        if (!callback) {
+            console.log('WARN: no callback in Order create')
+            return
+        }
 
-		if (err) {
-			callback(err)
-		} else {
-			callback(null, order)
-		}
-	})
+        if (err) {
+            callback(err)
+        } else {
+            callback(null, order)
+        }
+    })
 }
 
 module.exports = Order

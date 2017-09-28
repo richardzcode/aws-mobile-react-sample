@@ -7,13 +7,13 @@ See the License for the specific language governing permissions and limitations 
 */
 
 export default class Misc {
-	//
+    //
 };
 
 Misc.ts = function() {
-	return new Date().getTime();
+    return new Date().getTime();
 };
 
 Misc.tsUrl = function(url) {
-	return url + '?' + Misc.ts();
+    return url + '?' + Misc.ts();
 }
