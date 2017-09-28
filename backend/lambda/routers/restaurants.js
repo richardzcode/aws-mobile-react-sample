@@ -203,7 +203,7 @@ router.get('/:restaurantId/menu/:itemId', function(req, res) {
                 message: "Could not load menu item"
             }).end();
         } else {
-        	if (!item || item.restaurant_id !== restaurant_id) {
+        	if (!item || item.data.restaurant_id !== restaurant_id) {
         		// return 404 if we couldn't find the menu item in the database
                 res.status(404).json({
                     message: "The menu item does not exist"

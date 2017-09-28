@@ -19,7 +19,7 @@ var MenuItem = function(data) {
 MenuItem.TABLE_NAME = process.env.MENU_TABLE_NAME;
 
 MenuItem.find = function(storage, id, restaurant_id, callback) {
-    storage.find(MenuItem.TABLE_NAME, {id: id, restaurant_id: restaurant_id}, function(err, data) {
+    storage.find(MenuItem.TABLE_NAME, {restaurant_id: restaurant_id, id: id}, function(err, data) {
         if (!callback) {
             console.log('WARN: no callback in MenuItem find')
             return

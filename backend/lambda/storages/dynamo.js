@@ -38,6 +38,8 @@ DynamoStorage.prototype.find = function(table_name, id, callback) {
 			return
 		}
 
+        console.log(err);
+        console.log(data);
         if (err) {
         	callback(err)
         } else {
