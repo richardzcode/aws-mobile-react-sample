@@ -11,7 +11,7 @@ import { Label, List } from 'semantic-ui-react';
 
 import AppConfig from '../../configuration/AppConfig';
 import ContentBlock from '../../components/ContentBlock';
-import HttpClient from '../../clients/HttpClient';
+import RestClient from '../../clients/RestClient';
 import Logger from '../../utils/Logger';
 
 const logger = new Logger('Order');
@@ -24,7 +24,7 @@ export default class Order extends Component {
         menuItemName: '',
         itemId: '',
         orderDecription: ''
-    }
+    };
 
     componentWillMount() {
         var order_id = sessionStorage.getItem('latestOrder');
@@ -35,7 +35,7 @@ export default class Order extends Component {
     }
 
     fetchOrder = (order_id) => {
-        HttpClient.get(AppConfig.API.order.order(ordre_id))
+        RestClient.get(AppConfig.API.order.order(order_id))
             .then(response => {
                 const data = response.data;
                 logger.info(data);
@@ -44,21 +44,23 @@ export default class Order extends Component {
                     orderId: data.id,
                     quantity: quantity,
                     itemId: data.menu_items[0].id
-                })
+                });
             })
             .catch(err => logger.error(err));
     }
 
     fetchOrderDetails() {
         var restaurant_id = sessionStorage.getItem('currentRestaurantId');
-        HttpClient.get(AppConfig.API.restaurant.menu_item(restaurant_id, this.state.itemId))
+        var item_id = this.state.itemId;
+        console.log('restaurant_id: ' + restaurant_id + ', item_id: ' + item_id);
+        RestClient.get(AppConfig.API.restaurant.menu_item(restaurant_id, this.state.itemId))
         .then(response => {
             const data = response.data;
             logger.info(data);
             this.setState({
                 menuItemName: data.name,
                 orderDecription: data.description,
-            })
+            });
         })
         .catch(err => logger.error(err));
     }

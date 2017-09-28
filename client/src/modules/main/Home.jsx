@@ -12,7 +12,7 @@ import { Button } from 'semantic-ui-react';
 import Restaurants from './Restaurants';
 import AppConfig from '../../configuration/AppConfig';
 import ContentBlock from '../../components/ContentBlock';
-import HttpClient from '../../clients/HttpClient';
+import RestClient from '../../clients/RestClient';
 import Logger from '../../utils/Logger';
 
 const logger = new Logger('Home');
@@ -21,15 +21,13 @@ export default class Home extends Component {
     state = {
         restaurants: [],
         loading: null,
-    }
+    };
 
     fetchRestaurants = () => {
-        this.setState(() => {
-            return {
-                loading: true
-            }
+        this.setState({
+            loading: true
         });
-        HttpClient.get(AppConfig.API.restaurant.root)
+        RestClient.get(AppConfig.API.restaurant.root)
             .then(response => {
                 this.setState({
                     restaurants: response.data,
@@ -37,15 +35,32 @@ export default class Home extends Component {
                 });
             })
             .catch (err => logger.error(err));
-    }
+    };
 
     initRestaurant = () => {
-        HttpClient.post(AppConfig.API.restaurant.init)
+        var that = this;
+        RestClient.post(AppConfig.API.restaurant.init)
             .then(response => {
                 alert('Successfully inserted restaurants');
-                this.setState({
-                    restaurants: response.data,
+                that.setState({
+                    restaurants: response.data.restaurants,
                     loading: false
+                });
+            })
+            .catch (err => logger.error(err));
+    };
+
+    deleteRestaurant(restaurant_id) {
+        console.log('Deleting ' + restaurant_id);
+        var that = this;
+        RestClient.delete(AppConfig.API.restaurant.restaurant(restaurant_id))
+            .then(response => {
+                logger.info('Deleted');
+                var restaurants = that.state.restaurants.filter(function(restaurant) {
+                        return restaurant.id !== restaurant_id;
+                    });
+                that.setState({
+                    restaurants: restaurants
                 });
             })
             .catch (err => logger.error(err));
@@ -64,7 +79,11 @@ export default class Home extends Component {
                         Insert Restaurants
                     </Button>
                 </div>
-                <Restaurants tableData={this.state.restaurants} loading={this.state.loading} />
+                <Restaurants
+                    tableData={this.state.restaurants}
+                    loading={this.state.loading}
+                    deleteRestaurant={(id) => this.deleteRestaurant(id)}
+                />
             </ContentBlock>
         );
     }

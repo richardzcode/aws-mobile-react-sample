@@ -27,11 +27,11 @@ DynamoStorage.prototype.findAll = function(table_name, callback) {
 }
 
 DynamoStorage.prototype.find = function(table_name, id, callback) {
+    var key = (typeof id === 'string')? {id: id} : id;
+    console.log(key);
     this.dynamoDb.get({
         TableName: table_name,
-        Key: {
-            id: id
-        }
+        Key: key
     }, function(err, data) {
 		if (!callback) {
 			console.log('WARN: no callback in dynamo findAll')
@@ -82,7 +82,7 @@ DynamoStorage.prototype.delete = function(table_name, id, callback) {
 	this.dynamoDb.delete({
         TableName: table_name,
         Key: {
-            id: req.params.orderId
+            id: id
         }
     }, function(err, data) {
 		if (!callback) {

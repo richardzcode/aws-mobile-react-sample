@@ -29,7 +29,7 @@ const s3 = new AWS.S3({
 var path_params = function(path) {
 	return {
         Bucket: AppConfig.UserFiles.bucket,
-        Key: 'public/' + AWS.config.credentials.data.IdentityId + path
+        Key: 'public' + path
 	}
 };
 
@@ -51,8 +51,6 @@ var upload = function(path, file, meta, callback) {
     s3.upload(params, function(err, data) {
         if (err) {
             logger.error(err);
-        } else {
-            logger.info(data);
         }
 
         if (callback) { callback(err, data); }
@@ -65,9 +63,7 @@ var presign = function(path, callback) {
 
     s3.getSignedUrl('getObject', params, function(err, url) {
         if (err) {
-            console.log(err);
-        } else {
-            console.log(url);
+            logger.error(err);
         }
 
         if (callback) { callback(err, url); }

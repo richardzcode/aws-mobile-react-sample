@@ -8,15 +8,15 @@ See the License for the specific language governing permissions and limitations 
 
 import React, { Component } from 'react';
 
-import AppConfig from '../configuration/AppConfig';
 import S3Client from '../clients/S3Client';
-import HttpClient from '../clients/HttpClient';
-import Misc from '../utils/Misc';
 import Logger from '../utils/Logger';
+
+import amazon_logo from '../img/amazon_logo.png';
 
 const logger = new Logger('PhotoUpload');
 
-const default_img_src = 'http://g-ec2.images-amazon.com/images/G/01/social/api-share/amazon_logo_500500._V323939215_.png'
+//const default_img_src = 'http://g-ec2.images-amazon.com/images/G/01/social/api-share/amazon_logo_500500._V323939215_.png';
+const default_img_src = amazon_logo;
 
 export default class PhotoUpload extends Component {
 	constructor(props) {
@@ -29,16 +29,18 @@ export default class PhotoUpload extends Component {
 
         const that = this;
         const path = this.state.ObjectPath;
-        S3Client.head(path, function(err, data) {
+        S3Client.presign(path, function(err, url) {
             if (err) {
-                that.setState({ ImgSrc: default_img_src })
+                that.state.ImgSrc = default_img_src;
             } else {
-                S3Client.presign(path, function(err, url) {
-                    that.setState({ ImgSrc: url });
-                });
+                that.state.ImgSrc = url;
             }
         });
 	}
+
+    handleImageError(e) {
+        this.setState({ ImgSrc: default_img_src });
+    }
 
     handleInput(e) {
         var that = this;
@@ -62,7 +64,7 @@ export default class PhotoUpload extends Component {
 	render() {
 		return (
 	        <div className="photo-upload-container">
-	            <img src={this.state.ImgSrc} className="photo-upload-img" />
+	            <img src={this.state.ImgSrc} onError={(e) => this.handleImageError(e)} className="photo-upload-img" />
 	            <input title="Upload Photo" type="file" accept="image/*" className="photo-upload-input"
 	                onChange={(e) => this.handleInput(e)}
 	            />

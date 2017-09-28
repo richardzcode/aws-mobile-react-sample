@@ -10,6 +10,8 @@ var uuid = require('node-uuid')
 
 var Restaurant = function(data) {
 	if (!data.id) { data.id = uuid.v1(); }
+
+	this.id = data.id;
 	this.data = data
 }
 
@@ -63,6 +65,17 @@ Restaurant.create = function(storage, restaurant, callback) {
 		} else {
 			callback(null, restaurant)
 		}
+	})
+}
+
+Restaurant.delete = function(storage, id, callback) {
+	storage.delete(Restaurant.TABLE_NAME, id, function(err, data) {
+		if (!callback) {
+			console.log('WARN: no callback in Restaurant delete')
+			return
+		}
+
+		callback(err, data);
 	})
 }
 

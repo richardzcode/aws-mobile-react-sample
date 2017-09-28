@@ -7,12 +7,10 @@ See the License for the specific language governing permissions and limitations 
 */
 
 import React, { Component } from 'react';
-import { Table, Dimmer, Loader } from 'semantic-ui-react';
+import { Table, Dimmer, Loader, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
-import AppConfig from '../../configuration/AppConfig';
 import PhotoUpload from '../../components/PhotoUpload';
-import HttpClient from '../../clients/HttpClient';
 import Misc from '../../utils/Misc';
 
 export default class Restaurants extends Component {
@@ -36,24 +34,30 @@ export default class Restaurants extends Component {
                             <Table.HeaderCell>Address</Table.HeaderCell>
                             <Table.HeaderCell>Contact</Table.HeaderCell>
                             <Table.HeaderCell>Rating</Table.HeaderCell>
+                            <Table.HeaderCell></Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
                         {this.props.tableData.map((data, idx) =>
                             <Table.Row key={idx}>
                                 <Table.Cell>
-                                    <PhotoUpload
-                                        ObjectPath={'/' + data.id + '_cover'}
-                                        UploadUrl={Misc.tsUrl(AppConfig.API.restaurant.cover(data.id))}
-                                    />
+                                    <PhotoUpload ObjectPath={'/' + data.id + '_cover'} />
                                 </Table.Cell>
                                 <Table.Cell className="load-button"
-                                    onClick={() => this.rememberLastRestaurant(data.name, data.id)}>
+                                    onClick={() => this.rememberLastRestaurant(data.name, data.id)}
+                                >
                                     <Link to={'/main/menus/' + data.id}>{data.name}</Link>
                                 </Table.Cell>
                                 <Table.Cell>{data.address}</Table.Cell>
                                 <Table.Cell>{data.phone}</Table.Cell>
                                 <Table.Cell>{data.rating}</Table.Cell>
+                                <Table.Cell>
+                                    <Button circular size='tiny' color='red'
+                                        onClick={() => this.props.deleteRestaurant(data.id)}
+                                    >
+                                        Delete
+                                    </Button>
+                                </Table.Cell>
                             </Table.Row>
                         )}
                     </Table.Body>

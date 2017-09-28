@@ -17,10 +17,10 @@ export default class Logger {
 		type = type || 'INFO';
 
 		if (typeof msg === 'object') {
-            console.log('[' + type + '] ' + this.state.name);
+            console.log('[' + type + '] ' + this.state.name + ' - ');
             console.log(msg);
         } else {
-            console.log('[' + type + '] ' + this.state.name + ' ' + msg);
+            console.log('[' + type + '] ' + this.state.name + ' - ' + msg);
         }
 	}
 

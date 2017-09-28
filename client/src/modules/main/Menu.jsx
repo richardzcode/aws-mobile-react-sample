@@ -11,7 +11,7 @@ import { Button, Table } from 'semantic-ui-react';
 
 import AppConfig from '../../configuration/AppConfig';
 import ContentBlock from '../../components/ContentBlock';
-import HttpClient from '../../clients/HttpClient';
+import RestClient from '../../clients/RestClient';
 import Logger from '../../utils/Logger';
 
 const logger = new Logger('Menu');
@@ -20,7 +20,7 @@ export default class Menu extends Component {
 
     state = {
         menuItems: []
-    }
+    };
 
     componentWillMount() {
         var restaurant_id = sessionStorage.getItem('currentRestaurantId');
@@ -28,15 +28,15 @@ export default class Menu extends Component {
     }
 
     fetchMenuList = (restaurant_id) => {
-        HttpClient.get(AppConfig.API.restaurant.menu(restaurant_id))
+        RestClient.get(AppConfig.API.restaurant.menu(restaurant_id))
             .then(response => {
                 logger.info(response.data);
                 this.setState({
                     menuItems: response.data
                 });
-                return data;
+                return response.data;
             })
-            .catch (err => { throw error; });
+            .catch (err => { throw err; });
     }
 
     orderItem = (restaurant_id, item_id) => {
@@ -48,7 +48,7 @@ export default class Menu extends Component {
             }]
         });
 
-        HttpClient.post(AppConfig.API.order.root, body)
+        RestClient.post(AppConfig.API.order.root, body)
             .then(response => {
                 sessionStorage.setItem('latestOrder', response.data.id);
                 logger.info(response.data);

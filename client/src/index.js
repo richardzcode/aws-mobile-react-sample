@@ -44,10 +44,8 @@ export default class AppRoute extends Component {
     handleWindowClose = (e) => {
         e.preventDefault();
         handleSignOut();
-        this.setState(() => {
-            return {
-                authStatus: false
-            }
+        this.setState({
+            authStatus: false
         });
     }
 
@@ -62,17 +60,13 @@ export default class AppRoute extends Component {
 
     validateUserSession() {
         if(sessionStorage.getItem('isLoggedIn') === 'true'){
-            this.setState(() => {
-                return {
-                    authStatus: true
-                }
-            })
+            this.setState({
+                authStatus: true
+            });
         } else {
-            this.setState(() => {
-                return {
-                    authStatus: false
-                }
-            })
+            this.setState({
+                authStatus: false
+            });
         }
     }
 

@@ -18,8 +18,15 @@ AppConfig.API = {};
 AppConfig.API.restaurant = {
 	root : api_root + '/restaurants',
 	init: api_root + '/init',
-	menu: function(restauant_id) { return AppConfig.API.restaurant.root + '/' + restauant_id + '/menu'; },
-	menu_item: function(restauant_id, item_id) { return AppConfig.API.restaurant.root + '/' + restauant_id + '/menu/' + item_id; },
+	restaurant: function(restaurant_id) {
+		return AppConfig.API.restaurant.root + '/' + restaurant_id;
+	},
+	menu: function(restaurant_id) {
+		return AppConfig.API.restaurant.root + '/' + restaurant_id + '/menu';
+	},
+	menu_item: function(restaurant_id, item_id) {
+		return AppConfig.API.restaurant.root + '/' + restaurant_id + '/menu/' + item_id;
+	},
 	cover: function(restauant_id) { return AppConfig.API.restaurant.root + '/' + restauant_id + '/cover'; }
 };
 AppConfig.API.order = {

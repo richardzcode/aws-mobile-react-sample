@@ -11,13 +11,15 @@ var uuid = require('node-uuid')
 var MenuItem = function(data) {
 	if (!data.id) { data.id = uuid.v1(); }
 	if (!data.photo) { data.photo = []; }
+
+	this.id = data.id;
 	this.data = data
 }
 
 MenuItem.TABLE_NAME = process.env.MENU_TABLE_NAME;
 
-MenuItem.find = function(storage, id, callback) {
-	storage.find(MenuItem.TABLE_NAME, id, function(err, data) {
+MenuItem.find = function(storage, id, restaurant_id, callback) {
+	storage.find(MenuItem.TABLE_NAME, {id: id, restaurant_id: restaurant_id}, function(err, data) {
 		if (!callback) {
 			console.log('WARN: no callback in MenuItem find')
 			return

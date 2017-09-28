@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server",
     "zip": "zip lamda-web-app.zip package.json *.js node_modules",
-    "build": "webpack"
+    "build": "webpack -p"
   },
   "author": "",
   "license": "ISC",

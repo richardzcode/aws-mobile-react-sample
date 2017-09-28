@@ -70,9 +70,9 @@ function initData(dynamo_storage) {
         phone: "(512) 351-9724",
         rating: 4.6
     })
-    createMenu(dynamo_storage, restaurant.id)
+    createMenu(dynamo_storage, restaurant.data.id)
 
-    var restaurant = createRestaurant(dynamo_storage, {
+    restaurant = createRestaurant(dynamo_storage, {
         name: "Descartes Bar + Kitchen",
         address: "1596 Cartesian Blvd, Austin, TX 03928",
         phone: "(512) 836-5700",
@@ -80,7 +80,7 @@ function initData(dynamo_storage) {
     })
     createMenu(dynamo_storage, restaurant.id)
 
-    var restaurant = createRestaurant(dynamo_storage, {
+    restaurant = createRestaurant(dynamo_storage, {
         name: "Fermat’s Poke",
         address: "1640 Last Way, Dallas, TX 02391",
         phone: "n/a",
@@ -88,7 +88,7 @@ function initData(dynamo_storage) {
     })
     createMenu(dynamo_storage, restaurant.id)
 
-    var restaurant = createRestaurant(dynamo_storage, {
+    restaurant = createRestaurant(dynamo_storage, {
         name: "Euler’s Classic Cooking",
         address: "1851 Series Street, Dallas, TX 02938",
         phone: "(512) 323-0153",
@@ -96,7 +96,7 @@ function initData(dynamo_storage) {
     })
     createMenu(dynamo_storage, restaurant.id)
 
-    var restaurant = createRestaurant(dynamo_storage, {
+    restaurant = createRestaurant(dynamo_storage, {
         name: "Euclidian Eats",
         address: "2 Cosets Ave, Austin, TX, 02981",
         phone: "(512) 293-6118",

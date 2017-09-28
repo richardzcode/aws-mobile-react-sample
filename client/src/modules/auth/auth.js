@@ -8,11 +8,11 @@ See the License for the specific language governing permissions and limitations 
 
 import AWS, { Config, CognitoIdentityCredentials } from 'aws-sdk';
 import { CognitoUserPool, CognitoUserAttribute, AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
-import awsmobile from '../../configuration/aws-exports';
+import AppConfig from '../../configuration/AppConfig';
 
 const userPool = new CognitoUserPool({
-  UserPoolId: awsmobile.aws_user_pools_id,
-  ClientId: awsmobile.aws_user_pools_web_client_id
+  UserPoolId: AppConfig.UserPools.id,
+  ClientId: AppConfig.UserPools.web_client_id
 });
 let cognitoUser = null;
 
@@ -42,13 +42,13 @@ const loginCallbackFactory = function(callbacks, ctx) {
     return {
         onSuccess: (result) => {
             console.log('result: ', result);
-            const loginCred = 'cognito-idp.' + awsmobile.aws_project_region + '.amazonaws.com/' + awsmobile.aws_user_pools_id;
+            const loginCred = 'cognito-idp.' + AppConfig.Project.region + '.amazonaws.com/' + AppConfig.UserPools.id;
 
             let credJson = {};
             let Login = {};
 
             Login[loginCred] = result.getIdToken().getJwtToken();
-            credJson['IdentityPoolId'] = awsmobile.aws_cognito_identity_pool_id;
+            credJson['IdentityPoolId'] = AppConfig.Cognito.identity_pool_id;
             credJson['Logins'] = Login;
 
             AWS.config.credentials = new AWS.CognitoIdentityCredentials(credJson);
@@ -211,13 +211,24 @@ function handleForgotPasswordReset(username, verificationCode, newPassword, forg
  *****************/
 function handleSignOut(){
     const userPool = new CognitoUserPool({
-        UserPoolId : awsmobile.aws_user_pools_id, // Your user pool id here
-        ClientId :  awsmobile.aws_user_pools_web_client_id // Your client id here
+        UserPoolId : AppConfig.UserPools.id, // Your user pool id here
+        ClientId :  AppConfig.UserPools.web_client_id // Your client id here
     });
     const cognitoUser = userPool.getCurrentUser();
     cognitoUser.signOut();
     sessionStorage.setItem('isLoggedIn', false);
 }
 
-export {handleSignIn, loginCallbackFactory, sendMFAVerificationCode, handleResendVerificationCode, handleSubmitVerificationCode, checkRegistrationError,handleNewCustomerRegistration
-,forgotPasswordFactoryCallback, handleForgotPassword, handleForgotPasswordReset, handleSignOut};
+export {
+    handleSignIn,
+    loginCallbackFactory,
+    sendMFAVerificationCode,
+    handleResendVerificationCode,
+    handleSubmitVerificationCode,
+    checkRegistrationError,
+    handleNewCustomerRegistration,
+    forgotPasswordFactoryCallback,
+    handleForgotPassword,
+    handleForgotPasswordReset,
+    handleSignOut
+};
