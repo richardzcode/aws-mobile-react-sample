@@ -482,17 +482,41 @@ Note that `AppConfig.API.restaurant.root` matches the path you made for the Expr
 
 Save your changes and run your application again with `npm start`. You should have a new button after logging in. Press **New Restaurant** and then **List Restaurants** to see the new entry in the system.
 
+## Using S3 to store uploaded image <a name="s3storage"></a>
 
-### Security Information
+The sample application store images in S3. Check `./aws-mobile-react-sample/client/src/components/PhotoUpload`
 
-#### Storage locations
+```
+handleInput(e) {
+    var that = this;
+
+    const path = this.state.ObjectPath;
+    const file = e.target.files[0];
+    const type = file.type;
+
+    S3Client.upload(path, file, {'Content-Type': type}, function(err, data) {
+        if (err) {
+            logger.log(err);
+        } else {
+            logger.log(data);
+            S3Client.presign(path, function(err, url) {
+                that.setState({ ImgSrc: url });
+            });
+        }
+    })
+}
+```
+
+## Security Information
+
+### Storage locations
 
 The website hosting location for this sample uses an S3 bucket as the CloudFront origin. The S3 bucket is by default configured as publicly accessable for testing purposes. To learn more about restricting this access further, see [Amazon S3 Security Considerations](http://docs.aws.amazon.com/mobile-hub/latest/developerguide/s3-security.html) and [Amazon CloudFront Security Considerations](http://docs.aws.amazon.com/mobile-hub/latest/developerguide/cloudfront-security.html).
 
-#### sessionStorage
+### sessionStorage
 
 This sample app uses [sessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) to persist user tokens (`accessKeyId`, `secretAccessKey` and `sessionToken`). They are deleted when the browser is closed and not available when new tabs are opened. You can take further actions to secure these tokens by encrypting them.
 
-#### API Handler Table Permissions
+### API Handler Table Permissions
 
 The Lambda function in this sample will read and write to DynamoDB and it's role will be granted the appropriate permissions to perform such actions. If you wish to modify the sample to perform a more restricted set of actions see [Authentication and Access Control for Amazon DynamoDB](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/authentication-and-access-control.html).
