@@ -141,7 +141,9 @@ var sign = function(request, access_info) {
     var url_info = url.parse(request.url)
     request.headers['host'] = url_info.host;
     request.headers['x-amz-date'] = dt_str;
-    request.headers['X-Amz-Security-Token'] = access_info.session_token;
+    if (access_info.session_token) {
+        request.headers['X-Amz-Security-Token'] = access_info.session_token;
+    }
     
     var service_info = parse_service_info(request),
         request_str = canonical_request(request),

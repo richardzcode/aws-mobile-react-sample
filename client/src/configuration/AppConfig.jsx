@@ -13,11 +13,11 @@ export default class AppConfig {}
 AppConfig.CloudLogic = JSON.parse(awsmobile.aws_cloud_logic_custom)[0];
 AppConfig.CloudLogic.enabled = awsmobile.aws_cloud_logic === 'enable';
 
-const api_root = AppConfig.CloudLogic.endpoint + '/items';
 AppConfig.API = {};
+AppConfig.API.root = AppConfig.CloudLogic.endpoint + '/items';
 AppConfig.API.restaurant = {
-    root : api_root + '/restaurants',
-    init: api_root + '/init',
+    root : AppConfig.API.root + '/restaurants',
+    init: AppConfig.API.root + '/init',
     restaurant: function(restaurant_id) {
         return AppConfig.API.restaurant.root + '/' + restaurant_id;
     },
@@ -30,7 +30,7 @@ AppConfig.API.restaurant = {
     cover: function(restauant_id) { return AppConfig.API.restaurant.root + '/' + restauant_id + '/cover'; }
 };
 AppConfig.API.order = {
-    root: api_root + '/orders',
+    root: AppConfig.API.root + '/orders',
     order: function(order_id) { return AppConfig.API.order.root + '/' + order_id; }
 };
 

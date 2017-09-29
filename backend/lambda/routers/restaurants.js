@@ -95,69 +95,6 @@ router.delete('/:restaurantId', function(req, res) {
     });
 });
 
-router.get('/:restaurantId/cover', function(req, res) {
-	console.log('get cover requested')
-	var restaurant_id = req.params.restaurantId
-    if (!restaurant_id) {
-        res.status(400).json({
-            message: "Invalid restaurant ID"
-        }).end();
-    }
-
-    var path = restaurant_id + '_cover'
-    s3Storage.get(path, function(err, data) {
-    	res.end(data, 'binary')
-    });
-});
-
-router.put('/:restaurantId/cover', function(req, res) {
-	var restaurant_id = req.params.restaurantId
-    if (!restaurant_id) {
-        res.status(400).json({
-            message: "Invalid restaurant ID"
-        }).end()
-    }
-
-    var body = req.body
-    var content = Buffer.from(body.content, 'base64')
-    var meta = {
-    	'Content-Type': body.type
-    }
-
-    var path = 'public/' + restaurant_id + '_cover'
-    s3Storage.upload(path, content, meta, function(err, data) {
-    	if (err) {
-    		res.json({
-    			err: err
-    		});
-    		return;
-    	}
-
-    	var photo_url = data.Location;
-    	console.log('photo url: ' + photo_url);
-    	Restaurant.updateCover(storage, restaurant_id, photo_url, function(err, data) {
-    		console.log('update cover done')
-    		if (err) {
-    			console.log(err)
-    		} else {
-    			console.log(data)
-    		}
-    	});
-
-    	console.log('presign ' + path)
-    	s3Storage.presign(path, function(err, url) {
-    		console.log('presigned: ' + url);
-    	});
-
-    	res.json({
-    		restaurant_id: restaurant_id,
-    		url: photo_url
-    	});
-    });
-
-	//res.json({restaurant_id: restaurant_id})
-});
-
 /***************************
  * Restaurant menu methods *
  ***************************/

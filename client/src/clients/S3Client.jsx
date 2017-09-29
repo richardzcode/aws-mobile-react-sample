@@ -17,7 +17,7 @@ const logger = new Logger('S3Client');
 logger.info(sessionStorage.getItem('identityId'));
 
 AWS.config.update({
-    region: AppConfig.Cognito.region,
+    region: AppConfig.UserFiles.region,
     credentials: JSON.parse(sessionStorage.getItem('awsCredentials'))
 });
 
@@ -30,7 +30,7 @@ var path_params = function(path) {
 	return {
         Bucket: AppConfig.UserFiles.bucket,
         Key: 'public' + path
-	}
+	};
 };
 
 var head = function(path, callback) {
@@ -41,7 +41,7 @@ var head = function(path, callback) {
     s3.headObject(params, function(err, data) {
         if (callback) { callback(err, data); }
     });
-}
+};
 
 var upload = function(path, file, meta, callback) {
     var params = path_params(path);
@@ -55,7 +55,7 @@ var upload = function(path, file, meta, callback) {
 
         if (callback) { callback(err, data); }
     });
-}
+};
 
 var presign = function(path, callback) {
 	var params = path_params(path);
@@ -68,7 +68,7 @@ var presign = function(path, callback) {
 
         if (callback) { callback(err, url); }
     });
-}
+};
 
 export default {
 	head: head,

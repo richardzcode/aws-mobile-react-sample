@@ -42,16 +42,20 @@ const loginCallbackFactory = function(callbacks, ctx) {
     return {
         onSuccess: (result) => {
             console.log('result: ', result);
-            const loginCred = 'cognito-idp.' + AppConfig.Project.region + '.amazonaws.com/' + AppConfig.UserPools.id;
+            const loginCred = 'cognito-idp.' + AppConfig.Cognito.region + '.amazonaws.com/' + AppConfig.UserPools.id;
 
-            let credJson = {};
             let Login = {};
-
             Login[loginCred] = result.getIdToken().getJwtToken();
-            credJson['IdentityPoolId'] = AppConfig.Cognito.identity_pool_id;
-            credJson['Logins'] = Login;
 
-            AWS.config.credentials = new AWS.CognitoIdentityCredentials(credJson);
+            AWS.config.credentials = new AWS.CognitoIdentityCredentials(
+                {
+                    IdentityPoolId: AppConfig.Cognito.identity_pool_id,
+                    Logins: Login
+                },
+                {
+                    region: AppConfig.Cognito.region
+                }
+            );
 
             AWS.config.credentials.get((error) => {
                 if (error) {

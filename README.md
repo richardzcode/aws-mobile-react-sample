@@ -181,7 +181,7 @@ cd my-app/
 npm start
 ```
 
-If the application runs successfully, copy the `Auth`, `configuration` and `css` folders from `./aws-mobile-react-sample/client/src` to `./my-app/src` that was created by Create React App. Next copy `index.js` and `Main.jsx` from `./aws-mobile-react-sample/client/src` to `./my-app/src`. Edit the copied `Main.jsx` so that the `return()` function matches the below code:
+If the application runs successfully, copy the `Auth`, `configuration` and `css` folders from `./aws-mobile-react-sample/client/src` to `./my-app/src` that was created by Create React App. Next copy `index.js` and `modules/main/Main.jsx` from `./aws-mobile-react-sample/client/src` to `./my-app/src`. Edit the copied `Main.jsx` so that the `return()` function matches the below code:
 
 
 ```
@@ -216,11 +216,11 @@ Edit `Main.jsx and comment out the following:`
 
 ```
 //import Home from './Home';
-//import Menu from './API/Menu';
-//import Orders from './API/Order';
+//import Menu from './Menu';
+//import Orders from './Order';
 ```
 
-Also add `import App from './App';` to the top of `Main.jsx` and save the file.
+Also add `import App from '../../App';` to the top of `Main.jsx` and save the file.
 
 Edit `index.js` and replace the `require('file-loader....')` statement towards the top with:
 
@@ -265,18 +265,16 @@ cd my-app/
 npm start
 ```
 
-Copy `restRequestClient.jsx` from `./aws-mobile-react-sample/client/src/API` to `./my-app/src`. If you didn't do the previous section, copy `configuration` from `./aws-mobile-react-sample/client/src` to `./my-app/src`.
+Copy `clients/RestClient.jsx` from `./aws-mobile-react-sample/client/src/clients` to `./my-app/src/clients`.
+Copy `utils/Signer.js` from `./aws-mobile-react-sample/client/src/utils` to `./my-app/src/utilsIf you didn't do the previous section, copy `configuration` from `./aws-mobile-react-sample/client/src` to `./my-app/src`.
 
 Edit `./my-app/src/App.js` with the following imports at the top:
 
 ```
-import restRequest from './restRequestClient'
+import RestClient from './clients/RestClient'
 import Link from 'link-react';
 import { Table } from 'semantic-ui-react';
-import awsmobile from './configuration/aws-exports';
-const cloud_logic_array = JSON.parse(awsmobile.aws_cloud_logic_custom)
-const endPoint = cloud_logic_array[0].endpoint
-const apiRestaurantUri = endPoint + "/items/restaurants";
+import AppConfig from './configuration/AppConfig';
 ```
 
 Modify the `App` component like so **(NOTE: you are NOT modifying the render function YET)**:
@@ -287,19 +285,14 @@ class App extends Component {
     data: []
   }
   fetch = () => {
-    let requestParams = {
-      method: 'GET',
-      url: apiRestaurantUri
-    }
-    this.restResponse = restRequest(requestParams)
+    RestClient.get(AppConfig.API.restaurant.root)
       .then(resp => {
           this.setState({
-            data: resp
+            data: resp.data
         });
-
       })
-    .catch (function(error){
-      alert(error);
+    .catch (function(err){
+      alert(err);
   });
 }
 
@@ -418,93 +411,24 @@ Click **List restaurants** at the top of the page to invoke the REST client.
 
 The sample application invokes a Lambda function running Express which will make CRUD operations to DynamoDB depending on the route which is passed from the client application. You may wish to modify this backend behavior for your own needs. The steps outline how you could add functionality to _"create a Restaurant"_ by showing what modifications would be needed in the Lambda function and the corresponding client modifications to make the request.
 
-1. Add the following function into app.js before the section that says  `* Restaurant methods *`
+1. Import init into routers/restaurant.js
 
 ```
-var putCallback = function(err, data) {
-    if (err) {
-        console.log(err)
-    }
-}
-
-function createMenu(restaurant_id) {
-    var item1 = {}
-    item1.id = uuid.v1()
-    item1.restaurant_id = restaurant_id
-    item1.name = "Golden Ratio Bacon Skewers"
-    item1.description = "Fibonacci on a stick! Who doesn’t like bacon on a stick that keeps going?"
-    item1.photos = []
-    dynamoDb.put({
-        Item: item1,
-        TableName: MENU_TABLE_NAME
-    }, putCallback)
-    var item2 = {}
-    item2.id = uuid.v1()
-    item2.restaurant_id = restaurant_id
-    item2.name = "Abelian Cucumber Salad"
-    item2.description = "A cool and refreshing salad for any hot summer day."
-    item2.photos = []
-    dynamoDb.put({
-        Item: item2,
-        TableName: MENU_TABLE_NAME
-    }, putCallback)
-    var item3 = {}
-    item3.id = uuid.v1()
-    item3.restaurant_id = restaurant_id
-    item3.name = "Chili-Cucumber orientable Corn"
-    item3.description = "Feel like you’re connected to nature with corn that wraps around your belly."
-    item3.photos = []
-    dynamoDb.put({
-        Item: item3,
-        TableName: MENU_TABLE_NAME
-    }, putCallback)
-    var item4 = {}
-    item4.id = uuid.v1()
-    item4.restaurant_id = restaurant_id
-    item4.name = "Finite Short-Rib Fields"
-    item4.description = "No utensils! BBQ is finger food!"
-    item4.photos = []
-    dynamoDb.put({
-        Item: item4,
-        TableName: MENU_TABLE_NAME
-    }, putCallback)
-    var item5 = {}
-    item5.id = uuid.v1()
-    item5.restaurant_id = restaurant_id
-    item5.name = "Easy Fractal Salad"
-    item5.description = "This symmetric pasta salad features feta, artichoke hearts, and kale."
-    item5.photos = []
-    dynamoDb.put({
-        Item: item5,
-        TableName: MENU_TABLE_NAME
-    }, putCallback)
-}
+import createMenu from '../init';
 ```
 
-2. Now in the routes section (under the ` * Restaurant methods *` comment) add in a new POST route:
+2. In routes/restaurants.js (under the ` * Restaurant methods *` comment) add in a new POST route:
 
 ```
-app.post('/items/restaurants/new', function(req, res){
-    var restaurant = {}
-    restaurant.id = uuid.v1()
-    restaurant.name = req.body.name
-    restaurant.description = req.body.description
-    restaurant.address = req.body.address
-    restaurant.phone = req.body.phone
-    restaurant.rating =req.body.rating
-    dynamoDb.put({
-        Item: restaurant,
-        TableName: RESTAURANTS_TABLE_NAME
-    }, function(err,data){
-        if (err){
-            res.json({ message: err })
-        }else {
-            res.json({
-                message: "New Restaurant added!"
-            })   
-        }
-    })
-    createMenu(restaurant.id)
+app.post('/', function(req, res){
+    var restaurant = new Restaurant({
+        name: req.body.name,
+        description: req.body.description,
+        address: req.body.address,
+        phone: req.body.phone,
+        rating: req.body.rating
+    });
+    Restaurant.create(storage, restaurant);
 })
 ```
 
@@ -525,7 +449,7 @@ Alternatively you could click the Lambda function resource in the Mobile Hub con
 
 ```
   newRestaurant = () => {
-    let body = JSON.stringify({
+    let data = JSON.stringify({
       'name': 'New Name',
       'description': 'New description',
       'address': 'New address',
@@ -533,14 +457,7 @@ Alternatively you could click the Lambda function resource in the Mobile Hub con
       'rating': 'New rating'
     });
 
-    let requestParams = {
-      method: 'POST',
-      url: apiRestarauntUri + '/new',
-      headers: {'content-type': 'application/json'},
-      body
-    }
-
-    this.restResponse = restRequest(requestParams)
+    RestClient.post(AppConfig.API.restaurant.root, data)
       .then(data => {
         sessionStorage.setItem('latestOrder', data.id);
         console.log(data);
@@ -552,7 +469,7 @@ Alternatively you could click the Lambda function resource in the Mobile Hub con
   }
 ```
 
-Note that `url: apiRestarauntUri + '/new'` matches the path you made for the Express route in the Lambda function you uploaded.
+Note that `AppConfig.API.restaurant.root` matches the path you made for the Express route in the Lambda function you uploaded.
 
 6. In the `return` statement of the `render` method add in a new button next to the others:
 

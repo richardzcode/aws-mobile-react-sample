@@ -32,22 +32,22 @@ function ajax(url, method, data) {
         url: url,
         host: parsed_url.host,
         path: parsed_url.path
-    }
+    };
 
     params = {
         method: method,
         url: url,
         host: parsed_url.host,
         path: parsed_url.path
-    }
+    };
 
     if (data) {
-        params.headers = {'content-type': 'application/json'}
+        params.headers = {'content-type': 'application/json'};
         params.data = data;
     }
 
-    var credentials = sessionStorage.getItem('awsCredentials')
-    return credentials? signed(params, JSON.parse(credentials)) : unsigned(params)
+    var credentials = sessionStorage.getItem('awsCredentials');
+    return credentials? signed(params, JSON.parse(credentials)) : unsigned(params);
 }
 
 function get(url) {
@@ -77,18 +77,16 @@ function signed(params, credentials) {
         session_token: credentials.sessionToken
     });
 
+    delete signedParams.headers['host'];
+    delete signedParams.headers['Content-Length'];
+
     logger.info(signedParams);
-
-    delete signedParams.headers['host']
-    delete signedParams.headers['Content-Length']
-
-    logger.info(signedParams)
 
     return axios(signedParams);
 }
 
 function unsigned(params) {
-    return axios(params)
+    return axios(params);
 }
 
 export default {
@@ -98,4 +96,4 @@ export default {
     post: post,
     delete: delete_request,
     head: head
-}
+};

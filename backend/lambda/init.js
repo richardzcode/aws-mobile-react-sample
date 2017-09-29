@@ -105,4 +105,8 @@ function initData(dynamo_storage) {
     createMenu(dynamo_storage, restaurant.id)
 }
 
-exports.init = initData
+module.exports = {
+    init: initData,
+    createRestaurant: createRestaurant,
+    createMenu: createMenu
+};

@@ -28,7 +28,6 @@ DynamoStorage.prototype.findAll = function(table_name, callback) {
 
 DynamoStorage.prototype.find = function(table_name, id, callback) {
     var key = (typeof id === 'string')? {id: id} : id;
-    console.log(key);
     this.dynamoDb.get({
         TableName: table_name,
         Key: key
@@ -38,8 +37,6 @@ DynamoStorage.prototype.find = function(table_name, id, callback) {
 			return
 		}
 
-        console.log(err);
-        console.log(data);
         if (err) {
         	callback(err)
         } else {
@@ -100,18 +97,21 @@ DynamoStorage.prototype.delete = function(table_name, id, callback) {
 	})
 }
 
-DynamoStorage.prototype.update = function(table_name, id, field_name, field_value, callback) {
+DynamoStorage.prototype.update = function(table_name, id, fields, callback) {
+    var key = (typeof id === 'string')? {id: id} : id;
+    var expression = 'SET ' + Object.keys(fields)
+                                .map(function(key) { return key + '=:' + key; })
+                                .join(', ');
+    var values = {};
+    Object.keys(fields)
+        .map(function(key) { values[':' + key] = fields[key]; });
+
 	this.dynamoDb.update({
         TableName: table_name,
-        Key: {
-            id: id
-        },
-        UpdateExpression: 'SET ' + field_name + '=:field_value',
+        Key: key,
+        UpdateExpression: expression,
         ConditionExpression: 'id = :id',
-        ExpressionAttributeValues: {
-        	':id' : id,
-        	':field_value': field_value
-        }
+        ExpressionAttributeValues: values
 	}, function(err, data) {
 		if (!callback) {
 			console.log('WARN: no callback in dynamo update')
