@@ -8,6 +8,7 @@ Bootstrap a React application on AWS. This sample automatically provisions a Ser
  - [Using Registration and Login components in your App](#reglogin)
  - [Using the REST client in your App](#restclient)
  - [Modifying Express routes in Lambda for your App](#lambdamodify)
+ - [Using S3 to store uploaded image](#s3storage)
 
 ### Architecture Overview
 

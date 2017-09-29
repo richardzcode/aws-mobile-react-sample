@@ -23,7 +23,7 @@ var dynamoDb = new AWS.DynamoDB.DocumentClient();
 var storage = new DynamoStorage(dynamoDb);
 
 var s3 = new AWS.S3({
-	signatureVersion: 'v4'
+    signatureVersion: 'v4'
 });
 var s3Storage = new S3Storage(s3);
 
@@ -33,7 +33,7 @@ var s3Storage = new S3Storage(s3);
  **********************/
 
 router.get('/', function(req, res) {
-	Restaurant.findAll(storage, function(err, restaurants) {
+    Restaurant.findAll(storage, function(err, restaurants) {
         if (err) {
             console.log(err)
             res.status(500).json({
@@ -42,7 +42,7 @@ router.get('/', function(req, res) {
         } else {
             res.json(ModelUtil.toDataList(restaurants));
         }
-	});
+    });
 });
 
 router.get('/:restaurantId', function(req, res) {
@@ -64,13 +64,13 @@ router.get('/:restaurantId', function(req, res) {
                 message: "Could not load restaurant"
             }).end();
         } else {
-        	if (restaurant) {
-        		res.json(restaurant.data)
-        	} else {
-        		res.status(404).json({
+            if (restaurant) {
+                res.json(restaurant.data)
+            } else {
+                res.status(404).json({
                     message: "The restaurant does not exist"
                 });
-        	}
+            }
         }
     });
 });
@@ -125,7 +125,7 @@ router.get('/:restaurantId/menu/:itemId', function(req, res) {
     // extracts the details of a specific menu item
 
     var restaurant_id = req.params.restaurantId,
-    	item_id = req.params.itemId;
+        item_id = req.params.itemId;
 
     if (!restaurant_id || !item_id) {
         res.status(400).json({
@@ -134,20 +134,20 @@ router.get('/:restaurantId/menu/:itemId', function(req, res) {
     }
 
     MenuItem.find(storage, item_id, restaurant_id, function(err, item) {
-    	if (err) {
+        if (err) {
             console.log(err)
             res.status(500).json({
                 message: "Could not load menu item"
             }).end();
         } else {
-        	if (!item || item.data.restaurant_id !== restaurant_id) {
-        		// return 404 if we couldn't find the menu item in the database
+            if (!item || item.data.restaurant_id !== restaurant_id) {
+                // return 404 if we couldn't find the menu item in the database
                 res.status(404).json({
                     message: "The menu item does not exist"
                 });
-        	} else {
-        		res.json(item.data);
-        	}
+            } else {
+                res.json(item.data);
+            }
         }
     });
 });
