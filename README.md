@@ -266,7 +266,8 @@ npm start
 ```
 
 Copy `clients/RestClient.jsx` from `./aws-mobile-react-sample/client/src/clients` to `./my-app/src/clients`.
-Copy `utils/Signer.js` from `./aws-mobile-react-sample/client/src/utils` to `./my-app/src/utilsIf you didn't do the previous section, copy `configuration` from `./aws-mobile-react-sample/client/src` to `./my-app/src`.
+Copy `utils/Signer.js` from `./aws-mobile-react-sample/client/src/utils` to `./my-app/src/utils`
+If you didn't do the previous section, copy `configuration` from `./aws-mobile-react-sample/client/src` to `./my-app/src`.
 
 Edit `./my-app/src/App.js` with the following imports at the top:
 
@@ -420,7 +421,7 @@ import createMenu from '../init';
 2. In routes/restaurants.js (under the ` * Restaurant methods *` comment) add in a new POST route:
 
 ```
-app.post('/', function(req, res){
+router.post('/', function(req, res){
     var restaurant = new Restaurant({
         name: req.body.name,
         description: req.body.description,
