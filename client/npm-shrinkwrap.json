@@ -341,7 +341,9 @@
     "aws4": {
       "version": "1.6.0",
       "resolved": "https://registry.npmjs.org/aws4/-/aws4-1.6.0.tgz",
-      "integrity": "sha1-g+9cqGCysy5KDe7e6MdxudtXRx4="
+      "integrity": "sha1-g+9cqGCysy5KDe7e6MdxudtXRx4=",
+      "dev": true,
+      "optional": true
     },
     "axios": {
       "version": "0.16.2",

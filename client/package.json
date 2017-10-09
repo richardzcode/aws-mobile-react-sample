@@ -37,7 +37,6 @@
     "aws-api-gateway-client": "^0.2.7",
     "aws-sdk": "^2.49.0",
     "aws-serverless-express": "^2.2.0",
-    "aws4": "^1.6.0",
     "axios": "^0.16.1",
     "body-parser": "^1.17.1",
     "express": "^4.15.2",

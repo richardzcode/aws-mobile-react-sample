@@ -7,10 +7,10 @@ See the License for the specific language governing permissions and limitations 
 */
 
 var url = require('url'),
-    crypto = require('crypto');
+    crypto = require('aws-sdk').util.crypto;
 
 var encrypt = function(key, src, encoding) {
-    return crypto.createHmac('sha256', key).update(src, 'utf8').digest(encoding);
+    return crypto.lib.createHmac('sha256', key).update(src, 'utf8').digest(encoding);
 };
 
 var hash = function(src) {

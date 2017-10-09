@@ -19,13 +19,13 @@ const logger = new Logger('PhotoUpload');
 const default_img_src = amazon_logo;
 
 export default class PhotoUpload extends Component {
-	constructor(props) {
-		super(props);
+    constructor(props) {
+        super(props);
 
-		this.state = {
-			ImgSrc: null,
+        this.state = {
+            ImgSrc: null,
             ObjectPath: props.ObjectPath
-		};
+        };
 
         const that = this;
         const path = this.state.ObjectPath;
@@ -36,7 +36,7 @@ export default class PhotoUpload extends Component {
                 that.state.ImgSrc = url;
             }
         });
-	}
+    }
 
     handleImageError(e) {
         this.setState({ ImgSrc: default_img_src });
@@ -61,14 +61,14 @@ export default class PhotoUpload extends Component {
         })
     }
 
-	render() {
-		return (
-	        <div className="photo-upload-container">
-	            <img src={this.state.ImgSrc} onError={(e) => this.handleImageError(e)} className="photo-upload-img" />
-	            <input title="Upload Photo" type="file" accept="image/*" className="photo-upload-input"
-	                onChange={(e) => this.handleInput(e)}
-	            />
-	        </div>
+    render() {
+        return (
+            <div className="photo-upload-container">
+                <img src={this.state.ImgSrc} onError={(e) => this.handleImageError(e)} className="photo-upload-img" />
+                <input title="Upload Photo" type="file" accept="image/*" className="photo-upload-input"
+                    onChange={(e) => this.handleInput(e)}
+                />
+            </div>
         )
-	}
+    }
 }
