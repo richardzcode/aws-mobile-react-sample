@@ -7,23 +7,23 @@ See the License for the specific language governing permissions and limitations 
 */
 
 var DynamoStorage = function(dynamoDb) {
-	this.dynamoDb = dynamoDb
+    this.dynamoDb = dynamoDb
 }
 
 DynamoStorage.prototype.findAll = function(table_name, callback) {
-	// performs a DynamoDB Scan operation to extract all of the records in the table
-	this.dynamoDb.scan({ TableName: table_name }, function(err, data) {
-		if (!callback) {
-			console.log('WARN: no callback in dynamo findAll')
-			return
-		}
+    // performs a DynamoDB Scan operation to extract all of the records in the table
+    this.dynamoDb.scan({ TableName: table_name }, function(err, data) {
+        if (!callback) {
+            console.log('WARN: no callback in dynamo findAll')
+            return
+        }
 
-		if (err) {
-			callback(err)
-		} else {
-			callback(null, data['Items'])
-		}
-	})
+        if (err) {
+            callback(err)
+        } else {
+            callback(null, data['Items'])
+        }
+    })
 }
 
 DynamoStorage.prototype.find = function(table_name, id, callback) {
@@ -32,38 +32,38 @@ DynamoStorage.prototype.find = function(table_name, id, callback) {
         TableName: table_name,
         Key: key
     }, function(err, data) {
-		if (!callback) {
-			console.log('WARN: no callback in dynamo findAll')
-			return
-		}
+        if (!callback) {
+            console.log('WARN: no callback in dynamo findAll')
+            return
+        }
 
         if (err) {
-        	callback(err)
+            callback(err)
         } else {
-        	callback(null, data['Item'])
+            callback(null, data['Item'])
         }
     })
 }
 
 DynamoStorage.prototype.findBy = function(table_name, conditions, callback) {
-	var keyConditions = {}
-	for (key in conditions) {
-		keyConditions[key] = {
-			ComparisonOperator: 'EQ',
-			AttributeValueList: [conditions[key]]
-		}
-	}
+    var keyConditions = {}
+    for (key in conditions) {
+        keyConditions[key] = {
+            ComparisonOperator: 'EQ',
+            AttributeValueList: [conditions[key]]
+        }
+    }
     this.dynamoDb.query({
         TableName: table_name,
         KeyConditions: keyConditions
     }, function(err, data) {
-		if (!callback) {
-			console.log('WARN: no callback in dynamo findAll')
-			return
-		}
+        if (!callback) {
+            console.log('WARN: no callback in dynamo findAll')
+            return
+        }
 
         if (err) {
-        	callback(err)
+            callback(err)
         } else {
             callback(null, data['Items'])
         }
@@ -71,30 +71,30 @@ DynamoStorage.prototype.findBy = function(table_name, conditions, callback) {
 }
 
 DynamoStorage.prototype.create = function(table_name, data, callback) {
-	this.dynamoDb.put({
-		Item: data,
+    this.dynamoDb.put({
+        Item: data,
         TableName: table_name
     }, callback)
 }
 
 DynamoStorage.prototype.delete = function(table_name, id, callback) {
-	this.dynamoDb.delete({
+    this.dynamoDb.delete({
         TableName: table_name,
         Key: {
             id: id
         }
     }, function(err, data) {
-		if (!callback) {
-			console.log('WARN: no callback in dynamo delete')
-			return
-		}
+        if (!callback) {
+            console.log('WARN: no callback in dynamo delete')
+            return
+        }
 
         if (err) {
-        	callback(err)
+            callback(err)
         } else {
             callback(null, data)
         }
-	})
+    })
 }
 
 DynamoStorage.prototype.update = function(table_name, id, fields, callback) {
@@ -106,24 +106,24 @@ DynamoStorage.prototype.update = function(table_name, id, fields, callback) {
     Object.keys(fields)
         .map(function(key) { values[':' + key] = fields[key]; });
 
-	this.dynamoDb.update({
+    this.dynamoDb.update({
         TableName: table_name,
         Key: key,
         UpdateExpression: expression,
         ConditionExpression: 'id = :id',
         ExpressionAttributeValues: values
-	}, function(err, data) {
-		if (!callback) {
-			console.log('WARN: no callback in dynamo update')
-			return
-		}
+    }, function(err, data) {
+        if (!callback) {
+            console.log('WARN: no callback in dynamo update')
+            return
+        }
 
         if (err) {
-        	callback(err)
+            callback(err)
         } else {
             callback(null, data)
         }
-	})
+    })
 }
 
 module.exports = DynamoStorage
