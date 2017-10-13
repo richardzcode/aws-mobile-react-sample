@@ -11,6 +11,7 @@ import { Button, Table } from 'semantic-ui-react';
 
 import AppConfig from '../../configuration/AppConfig';
 import ContentBlock from '../../components/ContentBlock';
+import MenuItem from '../../components/MenuItem';
 import RestClient from '../../clients/RestClient';
 import Logger from '../../utils/Logger';
 
@@ -73,11 +74,14 @@ export default class Menu extends Component {
                     </Table.Header>
                     <Table.Body>
                         { this.state.menuItems && this.state.menuItems.map((item, i) =>
+                        <MenuItem restaurantId={item.restaurant_id} item={item} />
+                        /*
                         <Table.Row key={item.id}>
                             <Table.Cell>{item.name}</Table.Cell>
                             <Table.Cell>{item.description}</Table.Cell>
                             <Table.Cell><Button primary onClick={this.orderItem.bind(this, item.restaurant_id, item.id)}>Order</Button></Table.Cell>
                         </Table.Row>
+                        */
                         )}
                     </Table.Body>
                 </Table>

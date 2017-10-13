@@ -30,7 +30,7 @@ CanonicalHeadersEntry =
 </blockquote>
 */
 var canonical_headers = function(headers) {
-    if (!headers || Object.keys(headers) === 0) { return ''; }
+    if (!headers || Object.keys(headers).length === 0) { return ''; }
 
     return Object.keys(headers)
         .map(function(key) {
@@ -54,10 +54,10 @@ var canonical_headers = function(headers) {
 */
 var signed_headers = function(headers) {
     return Object.keys(headers)
-                .map(function(key) { return key.toLowerCase(); })
-                .sort()
-                .join(';');
-}
+        .map(function(key) { return key.toLowerCase(); })
+        .sort()
+        .join(';');
+};
 
 /**
 * @private
@@ -174,7 +174,7 @@ var get_authorization_header = function(algorithm, access_key, scope, signed_hea
         'SignedHeaders=' + signed_headers,
         'Signature=' + signature
     ].join(', ');
-}
+};
 
 /**
 * Sign a HTTP request, add 'Authorization' header to request param

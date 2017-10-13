@@ -74,8 +74,13 @@ AppConfig.UserPools = {
     id: awsmobile.aws_user_pools_id,
     mfa: awsmobile.aws_user_pools_mfa_type,
     web_client_id: awsmobile.aws_user_pools_web_client_id
-}
+};
 
 AppConfig.UserSettings = {
     enabled: awsmobile.aws_user_settings === 'enable'
-}
+};
+
+AppConfig.Analytics = {
+    enabled: awsmobile.aws_app_analytics,
+    app_id: awsmobile.aws_mobile_analytics_app_id
+};

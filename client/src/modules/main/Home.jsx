@@ -13,9 +13,12 @@ import Restaurants from './Restaurants';
 import AppConfig from '../../configuration/AppConfig';
 import ContentBlock from '../../components/ContentBlock';
 import RestClient from '../../clients/RestClient';
+import { Counter } from '../../clients/AnalyticsClient';
 import Logger from '../../utils/Logger';
 
 const logger = new Logger('Home');
+
+const fetch_counter = new Counter('fetch_restaurants');
 
 export default class Home extends Component {
     state = {
@@ -24,6 +27,8 @@ export default class Home extends Component {
     };
 
     fetchRestaurants = () => {
+        fetch_counter.count();
+        
         this.setState({
             loading: true
         });

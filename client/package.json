@@ -36,6 +36,7 @@
     "amazon-cognito-identity-js": "^1.16.0",
     "aws-api-gateway-client": "^0.2.7",
     "aws-sdk": "^2.49.0",
+    "aws-sdk-mobile-analytics": "^0.9.2",
     "aws-serverless-express": "^2.2.0",
     "axios": "^0.16.1",
     "body-parser": "^1.17.1",
